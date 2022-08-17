@@ -27,20 +27,31 @@ int convertBinToDec(bitset<8> a) {
 int s2BinToDec(bitset<8> a) {
     int num = 0;
     for (int i = 0; i < 8;i++) {
+        cout << a[i] << " " << i << endl;
 
-        if (a[i] == 1) {
+        if (a[i] == 1 && i == 7) {
+            int temp = (int)pow(2, i) * -1;
+            num += temp;
+        }
+        else if (a[i] == 1) {
             num += (int)pow(2, i);
-            cout << a[i] << " " << i << endl;
         }
-        else if (a[i] == 1 && i == 7) {
-            num -= (int)pow(2, i);
-            cout << a[i];
-        }
-        
-
     }
     return num;
 }
+bitset<8> s2BitInsert() {
+    string num;
+    cin >> num;
+    bitset<8> a(num);
+    int interger = s2BinToDec(a);
+    while (interger > 127 || interger < -128) {
+        cin >> num;
+        bitset<8> a(num);
+
+    }
+    return a;
+}
+
 bitset<8> BitInsert(string str) {
     cout << "Please enter the bin number " << str << ": " << endl;
     string number;
@@ -48,7 +59,30 @@ bitset<8> BitInsert(string str) {
     bitset<8> x(number);
     return x;
 }
+bitset<8> s2Binary(bitset<8> a) {
+    a.flip();
+    int carry = 1;
+    for (int i = 7; i >=0;i--) {
+        if (carry == 1 && a[i]==0) {
+            a[i] = 1;
+            carry = 0;
+        }
+        else if (carry == 1 && a[i] == 1) {
+            a[i] = 0;
+            carry = 1;
 
+        }
+        else if (carry == 0 && a[i] == 1) {
+            a[i] = 1;
+            carry = 0;
+        }
+        else {
+            a[i] = 0;
+            carry = 0;
+        }
+    }
+    return a;
+}
 bool checkingBinInRange(bitset<8> a) {
     int numbb = 0;
     for (int i = 0; i < 8;i++) {
@@ -250,6 +284,7 @@ bitset<8> AddingBinary() {
     return c;
 }
 void Result() {
+    cout << (int)-128 << endl;
     int choose =0;
     do {
         cout << "Please enter your choice" << endl;;
@@ -299,9 +334,9 @@ void Result() {
             break;
         }
         case 7: {
-            bitset<8> a = BitInsert("");
-            int num = s2BinToDec(a);
-            cout << num << endl;
+            bitset<8> a = s2BitInsert();
+            a = s2Binary(a);
+            cout <<a << endl;
             break;
         }
         default:
