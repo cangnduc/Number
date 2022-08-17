@@ -5,7 +5,7 @@
 #include <iostream>
 #include <ctime>
 #include <bitset>
-
+////something change
 using namespace std;
 void PrintBin(bitset<8> a) {
     for (int i = 0; i < 8; i++) {
