@@ -1,8 +1,64 @@
 
 #include <iostream>
 #include <bitset>
-////something change
+#include <string>
+
 using namespace std;
+template <size_t N1, size_t N2>
+bitset <N1 + N2> concat(const bitset <N1>& b1, const bitset <N2>& b2) {
+    string s1 = b1.to_string();
+    string s2 = b2.to_string();
+    return bitset <N1 + N2>(s1 + s2);
+}
+bitset<17> adding17Bin(bitset<17>a, bitset<16>b) {
+
+    bitset<17> c;
+    int carry = 0;
+    for (int i = 0; i < 16; i++) {
+        int sum = a[i] + b[i] + carry;
+
+        if (sum == 0) {
+            c[i] = 0;
+            carry = 0;
+        }
+        else if (sum == 1) {
+            c[i] = 1;
+            carry = 0;
+        }
+        else if (sum == 2) {
+            c[i] = 0;
+            carry = 1;
+        }
+        else if (sum == 3) {
+            c[i] = 1;
+            carry = 1;
+        }
+        
+    }
+    if (carry == 1) {
+        c[16] = 1;
+    }
+
+    return c;
+}
+bitset<17> MultiplyBinary(bitset<8> M, bitset<8> Q) {
+    int sizebit = 8;
+    int n = sizebit;
+    int k = 0;
+    bitset<2 * 8 + 1> CAQ(Q.to_string());
+    bitset<8> A;
+    while (k < 8) {
+
+        if (Q[0] == 1) {
+            CAQ = adding17Bin(CAQ, concat(M, A));
+        }
+        CAQ = CAQ >> 1;
+        Q = Q >> 1;
+        k = k + 1;
+    }
+
+    return CAQ;
+}
 void PrintBin(bitset<8> a) {
     for (int i = 0; i < 8; i++) {
         cout << a[i];
@@ -16,10 +72,11 @@ bitset<8> BitInsert(string str) {
     bitset<8> x(number);
     return x;
 }
-int convertBinToDec(bitset<8> a) {
+template <size_t T>
+int convertBinToDec(bitset<T> a) {
 
     int numbb = 0;
-    for (int i = 0; i < 8;i++) {
+    for (int i = 0; i < T;i++) {
 
         if (a[i] == 1) {
             numbb += (int)pow(2, i);
@@ -38,9 +95,10 @@ int convertBinToDec() {
     }
     return numbb;
 }
-int s2BinToDec(bitset<8> a) {
+template <size_t A>
+int s2BinToDec(bitset<A> a) {
     int num = 0;
-    for (int i = 0; i < 8;i++) {
+    for (int i = 0; i < A;i++) {
         if (a[i] == 1 && i == 7) {
             int temp = (int)pow(2, i) * -1;
             num += temp;
@@ -271,6 +329,40 @@ bitset<8> AddingBinary(bitset<8> a, bitset<8> b) {
     
     return c;
 }
+//bitset<17> MultiplyBinary(bitset<8> M, bitset<8> Q) {
+//    int sizebit = 8;
+//    int n = sizebit;
+//    int k = 0;
+//    bitset<2 * 8 + 1> CAQ(Q.to_string());
+//    bitset<8> A;
+//    while (k < 8) {
+//
+//        if (Q[0] == 1) {
+//            CAQ = adding17Bin(CAQ, concat(M, A));
+//        }
+//        CAQ = CAQ >> 1;
+//        Q = Q >> 1;
+//        k = k + 1;
+//    }
+//
+//    return CAQ;
+//}
+void handleMultiphy() {
+    
+    bitset<8>M =BitInsert("1");
+    int a = s2BinToDec(M);
+    bitset<8>Q = BitInsert("2");
+    int b = s2BinToDec(Q);
+    bitset<17> KQ = MultiplyBinary(M, Q);
+    int kqint = convertBinToDec(KQ);
+    cout << M << "(" << a << ") * " << Q << "(" << b << ") = " << KQ << "(" << kqint <<")" << endl;;
+}
+void test() {
+    bitset<8>a("100");
+    bitset<8>b("10");
+    bitset<8> c = a ^ b;
+    cout << c;
+}
 void Result() {
     cout << (int)-128 << endl;
     int choose =0;
@@ -283,6 +375,7 @@ void Result() {
         cout << "5. Convert Binary to Hexadecimal" << endl;
         cout << "6. Adding 2's Complement Binary of 8bits" << endl;
         cout << "7. Substract 2's Complement Binary of 8bits" << endl;
+        cout << "8. Multiply 2's Complement Binary of 8bits" << endl;
         cin >> choose;
         switch (choose)
         {
@@ -343,17 +436,17 @@ void Result() {
             cout <<a<<"("<<inta<<") - "<<b<<"("<<intb<<") = " << kq<<"("<<intkq<<")" << endl;
             break;
         }
+        case 8: {
+            handleMultiphy();
+        }
         default:
             cout << "Number is out of range, please enter again: "<< endl;
             break;
         }
     } while (choose != 0);
 }
-void test() {
-
-}
 int main()
 {
-    test();
-    //Result();
+    //test();
+    Result();
 }
