@@ -1,9 +1,5 @@
-// Number.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-#include<stdio.h>
-#include<conio.h>
+
 #include <iostream>
-#include <ctime>
 #include <bitset>
 ////something change
 using namespace std;
@@ -12,6 +8,13 @@ void PrintBin(bitset<8> a) {
         cout << a[i];
     }
     cout << endl;
+}
+bitset<8> BitInsert(string str) {
+    cout << "Please enter the bin number " << str << ": " << endl;
+    string number;
+    cin >> number;
+    bitset<8> x(number);
+    return x;
 }
 int convertBinToDec(bitset<8> a) {
 
@@ -24,11 +27,20 @@ int convertBinToDec(bitset<8> a) {
     }
     return numbb;
 }
+int convertBinToDec() {
+    bitset<8> a = BitInsert("");
+    int numbb = 0;
+    for (int i = 0; i < 8;i++) {
+
+        if (a[i] == 1) {
+            numbb += (int)pow(2, i);
+        }
+    }
+    return numbb;
+}
 int s2BinToDec(bitset<8> a) {
     int num = 0;
     for (int i = 0; i < 8;i++) {
-        cout << a[i] << " " << i << endl;
-
         if (a[i] == 1 && i == 7) {
             int temp = (int)pow(2, i) * -1;
             num += temp;
@@ -44,25 +56,13 @@ bitset<8> s2BitInsert() {
     cin >> num;
     bitset<8> a(num);
     int interger = s2BinToDec(a);
-    while (interger > 127 || interger < -128) {
-        cin >> num;
-        bitset<8> a(num);
-
-    }
+    
     return a;
 }
-
-bitset<8> BitInsert(string str) {
-    cout << "Please enter the bin number " << str << ": " << endl;
-    string number;
-    cin >> number;
-    bitset<8> x(number);
-    return x;
-}
-bitset<8> s2Binary(bitset<8> a) {
-    a.flip();
+bitset<8> s2BinaryMinus(bitset<8> a) {
+    a = a.flip();
     int carry = 1;
-    for (int i = 7; i >=0;i--) {
+    for (int i = 0; i< 8;i++) {
         if (carry == 1 && a[i]==0) {
             a[i] = 1;
             carry = 0;
@@ -76,7 +76,7 @@ bitset<8> s2Binary(bitset<8> a) {
             a[i] = 1;
             carry = 0;
         }
-        else {
+        else if(carry == 0 && a[i] == 0) {
             a[i] = 0;
             carry = 0;
         }
@@ -131,29 +131,18 @@ int checkNumInRange() {
         
     int numb=0;
     do {
-        cout << "Please enter the number in decimal (from -128 to 127): " << endl;
+        cout << "Please enter the number in decimal (from 0 to 255): " << endl;
         cin >> numb;
-    } while (numb > 127 || numb <= -128);
+    } while (numb > 255 || numb <= 0);
     return numb;
 }
-bitset<8> ConvertIntToBin() {
-    int numb;
+bitset<8> ConvertIntToBin(int numb) {
+    
     bitset<8> x;
-    numb = checkNumInRange();
+    
     x = TimDayBit(numb);
     
     return x;
-}
-int convertBinToDec() {
-    bitset<8> a = BitInsert("");
-    int numbb = 0;
-    for (int i = 0; i <8;i++) {
-        
-        if (a[i] == 1) {
-           numbb += (int)pow(2,i);
-        }
-    }
-    return numbb;
 }
 void decToHexa(int n)
 {
@@ -255,14 +244,13 @@ void BinToHex()
     }
     cout << "(hexadecimal)" << endl;
 }
-bitset<8> AddingBinary() {
-    bitset<8> a = BitInsert("1");
-    bitset<8> b = BitInsert("2");
+bitset<8> AddingBinary(bitset<8> a, bitset<8> b) {
+    
     bitset<8> c;
     int carry = 0;
     for (int i = 0; i<8; i++) {
         int sum = a[i] + b[i] + carry;
-        cout << sum << endl;
+       
         if (sum == 0) {
             c[i] = 0;
             carry = 0;
@@ -294,22 +282,26 @@ void Result() {
         cout << "4. Convert Hexadecimal to Decimal number" << endl;
         cout << "5. Convert Binary to Hexadecimal" << endl;
         cout << "6. Adding 2's Complement Binary of 8bits" << endl;
+        cout << "7. Substract 2's Complement Binary of 8bits" << endl;
         cin >> choose;
         switch (choose)
         {
         case 1: {
             cout << "Convert Int To Bin" << endl;
-            bitset<8> x = ConvertIntToBin();
-            cout << x << endl; 
+            int num = checkNumInRange();
+            bitset<8> x = ConvertIntToBin(num);
+            cout << num<<"(decimal) = "<< x<<"(bin)" << endl;
             break;
         }
         case 2:
         {
+            
             cout << "Convert Bin to Int" << endl;
+            bitset<8> a = BitInsert("");
             int numb;
             
-            numb = convertBinToDec();
-            cout << numb << endl;
+            numb = convertBinToDec(a);
+            cout <<a<<"(bin) = " << numb<<"(int)" << endl;
             break;
         }
         case 3: {
@@ -329,14 +321,26 @@ void Result() {
         }
         case 6:
         {
-            bitset<8> kq = AddingBinary();
-            cout << kq << endl;
+            bitset<8> a = BitInsert("1");
+            bitset<8> b = BitInsert("2");
+            bitset<8> kq = AddingBinary(a,b);
+            int aint = s2BinToDec(a);
+            int bint = s2BinToDec(b);
+            int kqint = s2BinToDec(kq);
+            cout <<a<<"("<<aint<<") + "<<b<<"("<<bint<<") = "<< kq<<"("<<kqint<<")" << endl;
             break;
         }
         case 7: {
-            bitset<8> a = s2BitInsert();
-            a = s2Binary(a);
-            cout <<a << endl;
+            bitset<8> a = BitInsert("1");
+            bitset<8> b = BitInsert("2");
+            int inta = convertBinToDec(a);
+            int intb = s2BinToDec(b);
+
+            bitset<8>c = s2BinaryMinus(b);
+            
+            bitset<8> kq = AddingBinary(a,c);
+            int intkq = s2BinToDec(kq);
+            cout <<a<<"("<<inta<<") - "<<b<<"("<<intb<<") = " << kq<<"("<<intkq<<")" << endl;
             break;
         }
         default:
@@ -345,39 +349,11 @@ void Result() {
         }
     } while (choose != 0);
 }
+void test() {
 
-void KetQua() {
-    
-    bool* a;
-    bool* b;
-    b = insertBin("2");
-    for (int i = 0; i < 8; i++) {
-
-        cout << b[i];
-    }
-    cout << endl;
-    a = insertBin("1");
-    for (int i = 0; i < 8; i++) {
-
-        cout << a[i];
-    }
 }
 int main()
 {
-   
-
-    Result();
-    //TimDayBit(42);
-    // a pointer to an int.
+    test();
+    //Result();
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
