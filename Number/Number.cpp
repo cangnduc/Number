@@ -2,7 +2,7 @@
 #include <iostream>
 #include <bitset>
 #include <string>
-
+#include <conio.h>
 using namespace std;
 template <size_t N1, size_t N2>
 bitset <N1 + N2> concat(const bitset <N1>& b1, const bitset <N2>& b2) {
@@ -363,10 +363,24 @@ void test() {
     bitset<8> c = a ^ b;
     cout << c;
 }
+void ClearS()
+{
+#if defined _WIN32
+    system("cls");
+    //clrscr(); // including header file : conio.h
+#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+    system("clear");
+    //std::cout<< u8"\033[2J\033[1;1H"; //Using ANSI Escape Sequences 
+#elif defined (__APPLE__)
+    system("clear");
+#endif
+}
 void Result() {
     cout << (int)-128 << endl;
     int choose =0;
+    
     do {
+        
         cout << "Please enter your choice" << endl;;
         cout << "1. Cover int to Bin" << endl;
         cout << "2. Convert Bin to Int" << endl;
@@ -377,6 +391,7 @@ void Result() {
         cout << "7. Substract 2's Complement Binary of 8bits" << endl;
         cout << "8. Multiply 2's Complement Binary of 8bits" << endl;
         cin >> choose;
+        ClearS();
         switch (choose)
         {
         case 1: {
