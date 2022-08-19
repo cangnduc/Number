@@ -42,8 +42,7 @@ bitset<17> adding17Bin(bitset<17>a, bitset<16>b) {
     return c;
 }
 bitset<17> MultiplyBinary(bitset<8> M, bitset<8> Q) {
-    int sizebit = 8;
-    int n = sizebit;
+    int n = 8;
     int k = 0;
     bitset<2 * 8 + 1> CAQ(Q.to_string());
     bitset<8> A;
@@ -59,12 +58,14 @@ bitset<17> MultiplyBinary(bitset<8> M, bitset<8> Q) {
 
     return CAQ;
 }
+
 void PrintBin(bitset<8> a) {
     for (int i = 0; i < 8; i++) {
         cout << a[i];
     }
     cout << endl;
 }
+// ham nhan vao so nhi phan
 bitset<8> BitInsert(string str) {
     cout << "Please enter the bin number " << str << ": " << endl;
     string number;
@@ -72,6 +73,7 @@ bitset<8> BitInsert(string str) {
     bitset<8> x(number);
     return x;
 }
+// ham doi he 2( so ko dau ) sang he 10
 template <size_t T>
 int convertBinToDec(bitset<T> a) {
 
@@ -95,11 +97,12 @@ int convertBinToDec() {
     }
     return numbb;
 }
+// ham convert he 2( dang bu 2) sang he 10
 template <size_t A>
 int s2BinToDec(bitset<A> a) {
     int num = 0;
     for (int i = 0; i < A;i++) {
-        if (a[i] == 1 && i == 7) {
+        if (a[i] == 1 && i == A-1) {
             int temp = (int)pow(2, i) * -1;
             num += temp;
         }
@@ -109,18 +112,13 @@ int s2BinToDec(bitset<A> a) {
     }
     return num;
 }
-bitset<8> s2BitInsert() {
-    string num;
-    cin >> num;
-    bitset<8> a(num);
-    int interger = s2BinToDec(a);
-    
-    return a;
-}
-bitset<8> s2BinaryMinus(bitset<8> a) {
+
+template<size_t s2zise>
+// ham doi tu so ko dau sang bu 2
+bitset<s2zise> s2BinaryMinus(bitset<s2zise> a) {
     a = a.flip();
     int carry = 1;
-    for (int i = 0; i< 8;i++) {
+    for (int i = 0; i< s2zise;i++) {
         if (carry == 1 && a[i]==0) {
             a[i] = 1;
             carry = 0;
@@ -140,19 +138,6 @@ bitset<8> s2BinaryMinus(bitset<8> a) {
         }
     }
     return a;
-}
-bool checkingBinInRange(bitset<8> a) {
-    int numbb = 0;
-    for (int i = 0; i < 8;i++) {
-
-        if (a[i] == 1) {
-            numbb += (int)pow(2, i);
-        }
-    }
-    if (numbb > 127 || numbb < -128) {
-        return false;
-    }
-    return true;
 }
 bool* insertBin(string str) {
     bitset<8> x(5);
@@ -174,9 +159,9 @@ bool* insertBin(string str) {
     }
     return a;
 }
+// ham doi tu he 10 sang he 2
 bitset<8> TimDayBit(int x) {
     bitset<8> a;
-    
     int k = 0;
     for (int i = 0; i <8; i++) {
         bool bit = (x >> i) & 1;
@@ -184,6 +169,7 @@ bitset<8> TimDayBit(int x) {
     }
     return a;
 }
+// ham kiem tra so dau vao
 int checkNumInRange() {
         
         
@@ -194,6 +180,7 @@ int checkNumInRange() {
     } while (numb > 255 || numb <= 0);
     return numb;
 }
+// ham doi tu he 10 sang he 2
 bitset<8> ConvertIntToBin(int numb) {
     
     bitset<8> x;
@@ -202,10 +189,10 @@ bitset<8> ConvertIntToBin(int numb) {
     
     return x;
 }
+// ham doi tu he 10 sang he 16
 void decToHexa(int n)
 {
     int temp = n;
-    // char array to store hexadecimal number
     char hexaDeciNum[8] = {};
     // counter for hexadecimal number array
     int i = 0;
@@ -223,7 +210,6 @@ void decToHexa(int n)
             hexaDeciNum[i] = temp + 55;
             i++;
         }
-
         n = n / 16;
     }
     cout << temp << "(10) is ";
@@ -231,45 +217,34 @@ void decToHexa(int n)
     for (int j = i - 1; j >= 0; j--)
         cout << hexaDeciNum[j];
     cout << "(hecxadecimal)" << endl;
-    
 }
+// ham doi tu he 16 sang he 10
 void hexadecimalToDecimal()
 {
     string hexVal;
     cout << "Please enter Hecxadecimal value: " << endl;
     cin >> hexVal;
     int len = (int)hexVal.length();
-
-    // Initializing base value to 1, i.e 16^0
     int base = 1;
-
     int dec_val = 0;
-
-    // Extracting characters as digits from last
-    // character
     for (int i = len - 1; i >= 0; i--) {
         // if character lies in '0'-'9', converting
-        // it to integral 0-9 by subtracting 48 from
-        // ASCII value
+        // it to integral 0-9 by subtracting 48 from ASCII value
         if (hexVal[i] >= '0' && hexVal[i] <= '9') {
             dec_val += (int(hexVal[i]) - 48) * base;
-
-            // incrementing base by power
             base = base << 4;
         }
-
         // if character lies in 'A'-'F' , converting
         // it to integral 10 - 15 by subtracting 55
-        // from ASCII value
         else if (hexVal[i] >= 'A' && hexVal[i] <= 'F') {
             dec_val += (int(hexVal[i]) - 55) * base;
-
             // incrementing base by power
             base = base <<4;
         }
     }
     cout << hexVal << "(hex) is " << dec_val << "(dec)" << endl;
 }
+// ham doi tu so nhi phan sang 16
 void BinToHex()
 {
     int hex[1000] = {};
@@ -302,11 +277,13 @@ void BinToHex()
     }
     cout << "(hexadecimal)" << endl;
 }
-bitset<8> AddingBinary(bitset<8> a, bitset<8> b) {
+// ham cong 2 so nhi phan
+template <size_t addzie>
+bitset<addzie> AddingBinary(bitset<addzie> a, bitset<addzie> b) {
     
-    bitset<8> c;
+    bitset<addzie> c;
     int carry = 0;
-    for (int i = 0; i<8; i++) {
+    for (int i = 0; i<addzie; i++) {
         int sum = a[i] + b[i] + carry;
        
         if (sum == 0) {
@@ -329,24 +306,7 @@ bitset<8> AddingBinary(bitset<8> a, bitset<8> b) {
     
     return c;
 }
-//bitset<17> MultiplyBinary(bitset<8> M, bitset<8> Q) {
-//    int sizebit = 8;
-//    int n = sizebit;
-//    int k = 0;
-//    bitset<2 * 8 + 1> CAQ(Q.to_string());
-//    bitset<8> A;
-//    while (k < 8) {
-//
-//        if (Q[0] == 1) {
-//            CAQ = adding17Bin(CAQ, concat(M, A));
-//        }
-//        CAQ = CAQ >> 1;
-//        Q = Q >> 1;
-//        k = k + 1;
-//    }
-//
-//    return CAQ;
-//}
+//Ham Nhan 2 so nhi phan
 void handleMultiphy() {
     
     bitset<8>M =BitInsert("1");
@@ -357,12 +317,59 @@ void handleMultiphy() {
     int kqint = convertBinToDec(KQ);
     cout << M << "(" << a << ") * " << Q << "(" << b << ") = " << KQ << "(" << kqint <<")" << endl;;
 }
-void test() {
-    bitset<8>a("100");
-    bitset<8>b("10");
-    bitset<8> c = a ^ b;
-    cout << c;
+//Ham - 2 so nhi phan
+template <size_t subnum>
+bitset<subnum> SubtractBinary(bitset<subnum> a, bitset<subnum> b) {
+    // convert so không dau sang bu 2
+    bitset<subnum>c = s2BinaryMinus(b);
+
+    bitset<subnum> kq = AddingBinary(a, c);
+    return kq;
 }
+// Ham chia 2 so nhi phan
+template<size_t sizeD>
+void BinaryDivision(bitset<sizeD>Q, bitset<sizeD>M) {
+    int k = sizeD;
+    bitset<sizeD>temp;
+    bitset<sizeD *2>AQ = concat(temp, Q);
+    while (k > 0) {
+        AQ = AQ << 1;
+        bitset<sizeD> A(AQ.to_string().substr(0, sizeD));
+       
+        bitset<sizeD> temp = SubtractBinary(A, M);
+        int x = s2BinToDec(temp);
+       
+        if ( x>=0) {
+            AQ.set(0, 1);
+            for (int i = 0; i < sizeD;i++) {
+                AQ.set(i + sizeD, temp[i]);
+            }   
+        }
+        k = k - 1;
+    }
+    int intQ = s2BinToDec(Q);
+    int intM = s2BinToDec(M);
+    bitset<sizeD> remain(AQ.to_string().substr(0, sizeD));
+    bitset<sizeD> KQ(AQ.to_string().substr(sizeD, sizeD*2));
+    int remainder = s2BinToDec(remain);
+    int intKQ = s2BinToDec(KQ);
+    cout << Q << "(" << intQ << ") / " << M << "(" << intM << ") = " << KQ << "(" << intKQ << "). So du: " << remain << "(" << remainder << ")" << endl;
+    cout <<"AQ = " << AQ << endl;
+    
+}
+// quan ly ket qua ham chia 2 so binary
+void HandleDivision() {
+    bitset<8>a = BitInsert("1");
+    bitset<8>b = BitInsert("2");
+    while (s2BinToDec(a) < s2BinToDec(b)) {
+        cout << "KQ =" << 0 << ".So du: " << a << "(" << s2BinToDec(a) << ")" << endl;
+        cout << "Number 1 must be bigger number 2" << endl;
+        a = BitInsert("1");
+        b = BitInsert("2");
+    }
+    BinaryDivision(a, b);
+}
+// Clear console screen sau moi method
 void ClearS()
 {
 #if defined _WIN32
@@ -375,8 +382,9 @@ void ClearS()
     system("clear");
 #endif
 }
+//Quan ly ket qua in ra mang hinh
 void Result() {
-    cout << (int)-128 << endl;
+    
     int choose =0;
     
     do {
@@ -389,7 +397,8 @@ void Result() {
         cout << "5. Convert Binary to Hexadecimal" << endl;
         cout << "6. Adding 2's Complement Binary of 8bits" << endl;
         cout << "7. Substract 2's Complement Binary of 8bits" << endl;
-        cout << "8. Multiply 2's Complement Binary of 8bits" << endl;
+        cout << "8. Multiply of 2's Complement Binary of 8bits" << endl;
+        cout << "9. Division of 2's Complement Binary of 8bits" << endl;
         cin >> choose;
         ClearS();
         switch (choose)
@@ -413,6 +422,7 @@ void Result() {
             break;
         }
         case 3: {
+            cout << "Convert Decimal to Hexadecimal:" << endl;
             cout << "Please enter the decimal number: " << endl;
             int num = 0;
             cin >> num;
@@ -420,15 +430,18 @@ void Result() {
             break;
         }
         case 4: {
+            cout << "Convert Hexadecimal to Decimal." << endl;
             hexadecimalToDecimal();
             break;
         }
         case 5: {
+            cout << "Convert Binary to Hexadecimal" << endl;
             BinToHex();
             break;
         }
         case 6:
         {
+            cout << "Adding 2 binary number" << endl;
             bitset<8> a = BitInsert("1");
             bitset<8> b = BitInsert("2");
             bitset<8> kq = AddingBinary(a,b);
@@ -439,6 +452,7 @@ void Result() {
             break;
         }
         case 7: {
+            cout << "Subtract 2 binary number" << endl;
             bitset<8> a = BitInsert("1");
             bitset<8> b = BitInsert("2");
             int inta = convertBinToDec(a);
@@ -452,7 +466,13 @@ void Result() {
             break;
         }
         case 8: {
+            cout << "Multiply of 2 binary number" << endl;
             handleMultiphy();
+        }
+        case 9: {
+            cout << "Division of 2 binary number" << endl;
+            HandleDivision();
+            break;
         }
         default:
             cout << "Number is out of range, please enter again: "<< endl;
@@ -462,6 +482,5 @@ void Result() {
 }
 int main()
 {
-    //test();
     Result();
 }
